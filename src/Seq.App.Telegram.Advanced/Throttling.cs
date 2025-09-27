@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 
-namespace Seq.App.Telegram
+namespace Seq.App.Telegram.Advanced
 {
     public class Throttling<T>
     {

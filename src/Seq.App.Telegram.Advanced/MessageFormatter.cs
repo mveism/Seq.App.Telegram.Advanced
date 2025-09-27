@@ -6,7 +6,7 @@ using Seq.Apps;
 using Seq.Apps.LogEvents;
 using Serilog;
 
-namespace Seq.App.Telegram
+namespace Seq.App.Telegram.Advanced
 {
     public class MessageFormatter
     {

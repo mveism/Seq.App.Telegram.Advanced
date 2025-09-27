@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 
-namespace Seq.App.Telegram
+namespace Seq.App.Telegram.Advanced
 {
     [SeqApp("Telegram notifier", Description = "Sends messages matching a view to Telegram.")]
     public class TelegramReactor : SeqApp, ISubscribeToAsync<LogEventData>
@@ -22,6 +22,19 @@ namespace Seq.App.Telegram
             DisplayName = "Group chat identifier",
             HelpText = "Unique identifier for your group chat (include minus)")]
         public long ChatId { get; set; }
+
+        [SeqAppSetting(
+            DisplayName = "Telegram MessageThreadId",
+            HelpText = "Identifier for the target message thread (topic) of the forum; for forum supergroups only",
+            IsOptional = true,
+            InputType = SettingInputType.Integer)]
+        public int? MessageThreadId { get; set; }
+
+        [SeqAppSetting(
+            DisplayName = "Disable Notification",
+            HelpText = "Sends the message silently. Users will receive a notification with no sound. Refer to https://telegram.org/blog/channels-2-0#silent-messages",
+            InputType = SettingInputType.Checkbox)]
+        public bool DisableNotification { get; set; }
 
         [SeqAppSetting(
             DisplayName = "Seq Base URL",
@@ -64,7 +77,7 @@ namespace Seq.App.Telegram
         {
             if (string.IsNullOrEmpty(Socks5ProxyHost))
                 return new TelegramBotClient(BotToken);
-            var proxy = string.IsNullOrEmpty(Socks5ProxyUserName)
+            HttpToSocks5Proxy proxy = string.IsNullOrEmpty(Socks5ProxyUserName)
                 ? new HttpToSocks5Proxy(Socks5ProxyHost, Socks5ProxyPort)
                 : new HttpToSocks5Proxy(Socks5ProxyHost, Socks5ProxyPort, Socks5ProxyUserName, Socks5ProxyPassword);
             return new TelegramBotClient(BotToken, new HttpClient(new HttpClientHandler { Proxy = proxy }));
@@ -80,7 +93,14 @@ namespace Seq.App.Telegram
                 return;
             var formatter = new MessageFormatter(Log, GetBaseUri(), MessageTemplate);
             var message = formatter.GenerateMessageText(evt);
-            await _telegram.Value.SendTextMessageAsync(ChatId, message, ParseMode.Markdown);
+            try
+            {
+                await _telegram.Value.SendMessage(ChatId, message, ParseMode.Markdown, messageThreadId: MessageThreadId, disableNotification: DisableNotification);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "{message}", message);
+            }
         }
     }
 }
