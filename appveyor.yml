@@ -14,15 +14,16 @@ nuget:
 
 install:
   - choco install gitversion.portable -pre -y
+  - nuget restore src/Seq.App.Telegram.Advanced.sln
 
 before_build:
   - cmd: gitversion /l console /output buildserver /updateAssemblyInfo
-  - ps: Update-AppveyorBuild -Version $GitVersion_NuGetVersion
+  - ps: Update-AppveyorBuild -Version $GitVersion_MajorMinorPatch
 
 after_build:
-  - cmd: cd src/Seq.App.Telegram
+  - cmd: cd src/Seq.App.Telegram.Advanced
   - cmd: dotnet publish -c Release -o ./obj/publish
-  - cmd: dotnet pack --no-build -c Release -o ./bin/nuget -p:PackageVersion="%GitVersion_NuGetVersion%"
+  - cmd: dotnet pack --no-build -c Release -o ./bin/nuget -p:PackageVersion="%GitVersion_MajorMinorPatch%"
   - ps: Get-ChildItem -Recurse *.nupkg | % { Push-AppveyorArtifact $_ -FileName $_.Name }
   - ps: Get-ChildItem -Recurse *.nupkg | % { dotnet nuget push -s "https://api.nuget.org/v3/index.json" -k $env:NuGet_Key $_.FullName }
  

@@ -3,8 +3,13 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Seq.App.Telegram.Advanced</PackageId>
-    <Description>An app for Seq (http://getseq.net) that forwards messages to Telegram.</Description>
-    <Authors>STDray</Authors>
+    <Description>An advanced Seq app for delivering log events to Telegram chats, supergroups, and channels with support for **forum supergroup topics** (via message_thread_id) and **silent messages** (via disable_notification).
+
+		Built on top of the latest Telegram.Bot library, extending and improving the original stdray/Seq.App.Telegram integration.
+
+		Perfect for teams using Telegram as a lightweight alerting and monitoring channel.
+	</Description>
+    <Authors>mveism</Authors>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageIcon>icon.png</PackageIcon>
     <PackageProjectUrl>https://github.com/mveism/Seq.App.Telegram.Advanced</PackageProjectUrl>
@@ -12,8 +17,12 @@
     <PackageTags>seq-app seq serilog events telegram</PackageTags>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <IncludeBuildOutput>true</IncludeBuildOutput>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
+  <ItemGroup>
+	<None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="HttpToSocks5Proxy" Version="1.4.0" />
