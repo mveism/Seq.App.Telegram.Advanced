@@ -10,7 +10,7 @@ using Telegram.Bot.Types.Enums;
 
 namespace Seq.App.Telegram.Advanced
 {
-    [SeqApp("Telegram notifier advanced", Description = "Sends messages matching a view to Telegram.")]
+    [SeqApp("Telegram Notifier Advanced", Description = "Sends messages into Telegram chats, supergroups, and channels with support for nested properties, forum topics, and silent messages.")]
     public class TelegramReactor : SeqApp, ISubscribeToAsync<LogEventData>
     {
         [SeqAppSetting(

@@ -3,11 +3,13 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Seq.App.Telegram.Advanced</PackageId>
-    <Description>An advanced Seq app for delivering log events to Telegram chats, supergroups, and channels with support for **forum supergroup topics** (via message_thread_id) and **silent messages** (via disable_notification).
+	<Description>An advanced Seq app for delivering log events to Telegram chats, supergroups, and channels with support for **forum supergroup topics** (via message_thread_id) and **silent messages** (via disable_notification).
+	
+	    Built on top of the latest Telegram.Bot library, extending and improving the original stdray/Seq.App.Telegram integration.
 
-		Built on top of the latest Telegram.Bot library, extending and improving the original stdray/Seq.App.Telegram integration.
+        - Supports **flattening nested properties** so nested event properties (e.g. User.FirstName) are correctly resolved and rendered in the MessageTemplate.
 
-		Perfect for teams using Telegram as a lightweight alerting and monitoring channel.
+        Perfect for teams using Telegram as a lightweight alerting and monitoring channel.
 	</Description>
     <Authors>mveism</Authors>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
