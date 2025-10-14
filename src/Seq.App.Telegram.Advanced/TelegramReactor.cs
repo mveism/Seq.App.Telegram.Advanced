@@ -95,7 +95,7 @@ namespace Seq.App.Telegram.Advanced
 
         readonly Throttling<uint> _throttling = new Throttling<uint>();
 
-        string GetBaseUri() => (BaseUrl ?? Host.BaseUri).TrimEnd('/');
+        string GetBaseUri() => (BaseUrl ?? "").TrimEnd('/');
 
         public async Task OnAsync(Event<LogEventData> evt)
         {

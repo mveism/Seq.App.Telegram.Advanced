@@ -7,6 +7,10 @@ This fork updates the Telegram.Bot library and adds support for:
 - **Silent messages** — send messages with `disable_notification` (users are notified with no sound)
 - **Flatten nested properties** — nested event properties can now be flattened into dot-notation keys (e.g. `User.FirstName`) so they are correctly resolved and rendered in the `MessageTemplate`.
 
+### Updates
+
+- **Skip appending link when Seq Base URL is empty** — Telegram messages will no longer append a link at the end if the `Seq Base URL` setting is not set. This ensures that messages remain clean and do not contain broken or empty links.
+
 Socks5 proxy is still supported.
 
 [![NuGet](https://img.shields.io/nuget/v/Seq.App.Telegram.Advanced.svg?style=flat-square)](https://www.nuget.org/packages/Seq.App.Telegram.Advanced/)

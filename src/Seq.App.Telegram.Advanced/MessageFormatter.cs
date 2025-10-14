@@ -35,7 +35,15 @@ namespace Seq.App.Telegram.Advanced
 
         public string GenerateMessageText(Event<LogEventData> evt)
         {
-            return $"{SubstitutePlaceholders(MessageTemplate, evt)} [link]({BaseUrl}/#/events?filter=@Id%3D%3D'{evt.Id}'&show=expanded)";
+            var message = SubstitutePlaceholders(MessageTemplate, evt);
+
+            if (string.IsNullOrWhiteSpace(BaseUrl) == false)
+            {
+                var link = $"{BaseUrl}/#/events?filter=@Id%3D%3D'{evt.Id}'&show=expanded";
+                message += $" [link]({link})";
+            }
+
+            return message;
         }
 
         string SubstitutePlaceholders(string messageTemplateToUse, Event<LogEventData> evt)
