@@ -20,16 +20,18 @@ namespace Seq.App.Telegram.Advanced
             { "`", "\\`" }
         };
 
-        public MessageFormatter(ILogger log, string baseUrl, string messageTemplate)
+        public MessageFormatter(ILogger log, string baseUrl, string messageTemplate, bool flattenProperties)
         {
             Log = log;
             MessageTemplate = messageTemplate ?? "[RenderedMessage]";
             BaseUrl = baseUrl;
+            FlattenProperties = flattenProperties;
         }
 
         public ILogger Log { get; }
         public string MessageTemplate { get; }
         public string BaseUrl { get; }
+        public bool FlattenProperties { get; }
 
         public string GenerateMessageText(Event<LogEventData> evt)
         {
@@ -42,8 +44,13 @@ namespace Seq.App.Telegram.Advanced
             var eventType = evt.EventType;
             var level = data.Level;
 
-            var placeholders = data.Properties?.ToDictionary(x => x.Key, x => x.Value, StringComparer.OrdinalIgnoreCase)
+            Dictionary<string, object> placeholders = data.Properties?.ToDictionary(x => x.Key, x => x.Value, StringComparer.OrdinalIgnoreCase)
                 ?? new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+
+            if (FlattenProperties)
+            {
+                placeholders = DictionaryUtils.Flatten(placeholders);
+            }
 
             AddValueIfKeyDoesntExist(placeholders, "Level", level);
             AddValueIfKeyDoesntExist(placeholders, "EventType", eventType);
@@ -53,7 +60,9 @@ namespace Seq.App.Telegram.Advanced
             {
                 var key = m.Groups["key"].Value.ToLower();
                 var format = m.Groups["format"].Value;
-                return placeholders.ContainsKey(key) ? FormatValue(placeholders[key], format) : m.Value;
+
+                KeyValuePair<string, object> prop = placeholders.FirstOrDefault(x => string.Equals(x.Key, key, StringComparison.InvariantCultureIgnoreCase));
+                return prop.Value != null ? FormatValue(prop.Value, format) : m.Value;
             });
         }
 

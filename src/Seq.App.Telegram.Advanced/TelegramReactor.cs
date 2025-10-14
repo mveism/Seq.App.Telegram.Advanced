@@ -49,6 +49,15 @@ namespace Seq.App.Telegram.Advanced
         public string MessageTemplate { get; set; }
 
         [SeqAppSetting(
+            DisplayName = "Support Nested Properties",
+            HelpText = "When enabled, nested event properties are flattened into dot-notation keys (e.g. User.FirstName, User.LastName). " +
+                "This ensures that nested properties are correctly resolved and rendered within the MessageTemplate. " +
+                "If disabled, properties containing dots will not be expanded, and their values may not appear in the message output. " +
+                "If you notice that your message shows 'User.FirstName' instead of the actual value, enable this option to fix it.",
+            InputType = SettingInputType.Checkbox)]
+        public bool FlattenProperties { get; set; }
+
+        [SeqAppSetting(
             DisplayName = "Suppression time (minutes)",
             IsOptional = true,
             HelpText = "Once an event type has been sent to Telegram, the time to wait before sending again. The default is zero.")]
@@ -91,8 +100,8 @@ namespace Seq.App.Telegram.Advanced
         {
             if (!_throttling.TryBegin(evt.EventType, TimeSpan.FromMinutes(SuppressionMinutes)))
                 return;
-            var formatter = new MessageFormatter(Log, GetBaseUri(), MessageTemplate);
-            var message = formatter.GenerateMessageText(evt);
+            var formatter = new MessageFormatter(Log, GetBaseUri(), MessageTemplate, FlattenProperties);
+            string message = formatter.GenerateMessageText(evt);
             try
             {
                 await _telegram.Value.SendMessage(ChatId, message, ParseMode.Markdown, messageThreadId: MessageThreadId, disableNotification: DisableNotification);
