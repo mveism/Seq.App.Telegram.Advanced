@@ -54,7 +54,8 @@ namespace Seq.App.Telegram.Advanced
                 "This ensures that nested properties are correctly resolved and rendered within the MessageTemplate. " +
                 "If disabled, properties containing dots will not be expanded, and their values may not appear in the message output. " +
                 "If you notice that your message shows 'User.FirstName' instead of the actual value, enable this option to fix it.",
-            InputType = SettingInputType.Checkbox)]
+            InputType = SettingInputType.Checkbox,
+            IsOptional = true)]
         public bool FlattenProperties { get; set; }
 
         [SeqAppSetting(
