@@ -24,6 +24,12 @@ namespace Seq.App.Telegram.Advanced
         public long ChatId { get; set; }
 
         [SeqAppSetting(
+            IsOptional = true,
+            DisplayName = "Bot Server BaseUrl",
+            HelpText = "Used to change base url to another bot api server URL. Path, query and fragment will be omitted if present.")]
+        public string EndPoint { get; set; }
+
+        [SeqAppSetting(
             DisplayName = "Telegram MessageThreadId",
             HelpText = "Identifier for the target message thread (topic) of the forum; for forum supergroups only",
             IsOptional = true,
@@ -85,12 +91,25 @@ namespace Seq.App.Telegram.Advanced
 
         TelegramBotClient CreateTelegramBotClient()
         {
+            TelegramBotClientOptions telegramBotClientOptions;
+
+            if (string.IsNullOrWhiteSpace(EndPoint) == false)
+            {
+                telegramBotClientOptions = new TelegramBotClientOptions(BotToken, baseUrl: EndPoint);
+            }
+            else
+            {
+                telegramBotClientOptions = new TelegramBotClientOptions(BotToken);
+            }
+
             if (string.IsNullOrEmpty(Socks5ProxyHost))
-                return new TelegramBotClient(BotToken);
+                return new TelegramBotClient(telegramBotClientOptions);
+
             HttpToSocks5Proxy proxy = string.IsNullOrEmpty(Socks5ProxyUserName)
                 ? new HttpToSocks5Proxy(Socks5ProxyHost, Socks5ProxyPort)
                 : new HttpToSocks5Proxy(Socks5ProxyHost, Socks5ProxyPort, Socks5ProxyUserName, Socks5ProxyPassword);
-            return new TelegramBotClient(BotToken, new HttpClient(new HttpClientHandler { Proxy = proxy }));
+
+            return new TelegramBotClient(telegramBotClientOptions, new HttpClient(new HttpClientHandler { Proxy = proxy }));
         }
 
         readonly Throttling<uint> _throttling = new Throttling<uint>();

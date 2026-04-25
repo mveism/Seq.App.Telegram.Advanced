@@ -3,6 +3,7 @@
 An advanced fork of [stdray/Seq.App.Telegram](https://github.com/stdray/Seq.App.Telegram) for [Seq](https://datalust.co/) that forwards log events to Telegram.  
 This fork updates the Telegram.Bot library and adds support for:
 
+- **Bot Server BaseUrl** — Used to change base url to another bot api server URL
 - **Forum supergroups topics** — target a specific thread using `message_thread_id`
 - **Silent messages** — send messages with `disable_notification` (users are notified with no sound)
 - **Flatten nested properties** — nested event properties can now be flattened into dot-notation keys (e.g. `User.FirstName`) so they are correctly resolved and rendered in the `MessageTemplate`.
