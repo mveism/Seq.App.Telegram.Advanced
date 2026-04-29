@@ -9,7 +9,8 @@
 
         - Supports **flattening nested properties** so nested event properties (e.g. User.FirstName) are correctly resolved and rendered in the MessageTemplate.
         - Automatically **skips appending the BaseUrl link** to the end of messages when the Seq Base URL is empty, preventing broken or empty links.
-
+        - Bot Server BaseUrl — Customize the base URL to connect to alternative Bot API servers.
+        
         Perfect for teams using Telegram as a lightweight alerting and monitoring channel.
 	</Description>
     <Authors>mveism</Authors>
@@ -17,20 +18,20 @@
     <PackageIcon>icon.png</PackageIcon>
     <PackageProjectUrl>https://github.com/mveism/Seq.App.Telegram.Advanced</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageTags>seq-app seq serilog events telegram</PackageTags>
+    <PackageTags>seq-app seq serilog events telegram telegram-bot seq-bot seq-telegram</PackageTags>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <IncludeBuildOutput>true</IncludeBuildOutput>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
-	<None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+	<None Include="..\..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="HttpToSocks5Proxy" Version="1.4.0" />
     <PackageReference Include="Seq.Apps" Version="2021.4.0" />
-    <PackageReference Include="Telegram.Bot" Version="22.7.2" />
+    <PackageReference Include="Telegram.Bot" Version="22.9.6.1" />
   </ItemGroup>
 
   <ItemGroup>
